@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/diegofcruz/video-maker-auto/issues"
   },
-  "homepage": "https://github.com/diegofcruz/video-maker-auto#readme"
+  "homepage": "https://github.com/diegofcruz/video-maker-auto#readme",
+  "dependencies": {
+    "readline-sync": "^1.4.9"
+  }
 }
