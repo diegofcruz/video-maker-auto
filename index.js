@@ -1,10 +1,10 @@
 const readline = require('readline-sync')
 
 function start() {
-    const content = {}
+    const videoContent = {}
 
-    content.searchTerm = askSearchTerm()
-    content.prefix = askPrefix()
+    videoContent.searchTerm = askSearchTerm()
+    videoContent.prefix = askPrefix()
 
     function askSearchTerm() {
         return readline.question('What subject do you create a video: ')
@@ -22,7 +22,7 @@ function start() {
         return prefix[selectedPrefixIndex]
     }
 
-    console.log(content)
+    console.log(videoContent)
 }
 
 start()
