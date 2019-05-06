@@ -2,10 +2,20 @@ const algorithmia = require('algorithmia')
 const algorithmiaKey = require('../credentials/algorithmia.json').apiKey
 const sentenceBoundaryDetection = require('sbd')
 
+const watsonApiKey = require('../credentials/watson-nlu.json').apikey
+const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1.js');
+
+const nlu = new NaturalLanguageUnderstandingV1({
+    iam_apikey: watsonApiKey,
+    version: "2018-04-05",
+    url: "https://gateway.watsonplatform.net/natural-language-understanding/api"
+})
+
 async function startRobot(content) {
     await fetchContentFromWikipedia(content)
     sanitizeContent(content)
     breakContentIntoSentences(content)
+    limitMaxSentences(content)
 
     async function fetchContentFromWikipedia(content) {
         const algorithmiaAuthetincated = algorithmia(algorithmiaKey)
@@ -52,6 +62,31 @@ async function startRobot(content) {
                 text: sentence,
                 keywords: [],
                 images: []
+            })
+        })
+    }
+
+    function limitMaxSentences(content) {
+        content.sentences = content.sentences.slice(0, content.maxSentences)
+    }
+
+    async function fetchWatsonAndReturnKeywords(sentence) {
+        return new Promise((resolve, reject) => {
+            nlu.analyze({
+                html: sentence,
+                features: {
+                    keywords: {}
+                }
+            }, function(err, response) {
+                if (err) {
+                    throw error
+                }
+    
+                const keywords = response.keywords.map((keyword) => {
+                    return keyword.text
+                })
+    
+                resolve(keywords)
             })
         })
     }

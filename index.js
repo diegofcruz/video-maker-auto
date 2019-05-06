@@ -6,7 +6,9 @@ const robots = {
 }
 
 async function start() {
-    const videoContent = {}
+    const videoContent = {
+        maxSentences: 7
+    }
 
     await robots.input(videoContent)
     await robots.text(videoContent)
