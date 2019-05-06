@@ -1,0 +1,22 @@
+{
+  "name": "video-maker-auto",
+  "version": "1.0.0",
+  "description": "Make auto videos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diegofcruz/video-maker-auto.git"
+  },
+  "author": "Diego Cruz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diegofcruz/video-maker-auto/issues"
+  },
+  "homepage": "https://github.com/diegofcruz/video-maker-auto#readme",
+  "dependencies": {
+    "readline-sync": "^1.4.9"
+  }
+}
