@@ -10,7 +10,10 @@ async function startRobot(content) {
     async function fetchContentFromWikipedia(content) {
         const algorithmiaAuthetincated = algorithmia(algorithmiaKey)
         const wikipediaAlgorithm = algorithmiaAuthetincated.algo('web/WikipediaParser/0.1.2?timeout=300')
-        const wikipediaResponse = await wikipediaAlgorithm.pipe(content.searchTerm)
+        const wikipediaResponse = await wikipediaAlgorithm.pipe({
+            'articleName': content.searchTerm, 
+            'lang': content.lang
+        })
         const wikepediaContent = wikipediaResponse.get()
 
         content.sourceContentOriginal = wikepediaContent.content
