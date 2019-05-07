@@ -6,10 +6,14 @@ const robots = {
 }
 
 async function start() {
-    const videoContent = {}
+    const videoContent = {
+        maxSentences: 7
+    }
 
     await robots.input(videoContent)
     await robots.text(videoContent)
+
+    console.log(JSON.stringify(videoContent, null, 4))
 }
 
 start()
