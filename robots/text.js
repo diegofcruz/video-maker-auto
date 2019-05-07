@@ -16,17 +16,24 @@ async function startRobot(content) {
     sanitizeContent(content)
     breakContentIntoSentences(content)
     limitMaxSentences(content)
+    await fetchKeywordsAllOfSentences(content)
 
     async function fetchContentFromWikipedia(content) {
         const algorithmiaAuthetincated = algorithmia(algorithmiaKey)
         const wikipediaAlgorithm = algorithmiaAuthetincated.algo('web/WikipediaParser/0.1.2?timeout=300')
         const wikipediaResponse = await wikipediaAlgorithm.pipe({
-            'articleName': content.searchTerm, 
+            'articleName': content.searchTerm,
             'lang': content.lang
         })
         const wikepediaContent = wikipediaResponse.get()
 
         content.sourceContentOriginal = wikepediaContent.content
+    }
+
+    async function fetchKeywordsAllOfSentences(content) {
+        for (const sentence of content.sentences) {
+            sentence.keywords = await fetchWatsonAndReturnKeywords(sentence.text)
+        }
     }
 
     function sanitizeContent(content) {
@@ -48,7 +55,7 @@ async function startRobot(content) {
         }
 
         function removeDatesInParentheses(text) {
-            return text.replace(/\((?:\([^()]*\)|[^()])*\)/gm, '').replace(/  /g,' ')
+            return text.replace(/\((?:\([^()]*\)|[^()])*\)/gm, '').replace(/  /g, ' ')
         }
     }
 
@@ -56,7 +63,7 @@ async function startRobot(content) {
         content.sentences = []
 
         const sentences = sentenceBoundaryDetection.sentences(content.sourceContentSanitize)
-        
+
         sentences.forEach((sentence) => {
             content.sentences.push({
                 text: sentence,
@@ -77,15 +84,15 @@ async function startRobot(content) {
                 features: {
                     keywords: {}
                 }
-            }, function(err, response) {
+            }, function (err, response) {
                 if (err) {
-                    throw error
+                    throw err
                 }
-    
+
                 const keywords = response.keywords.map((keyword) => {
                     return keyword.text
                 })
-    
+
                 resolve(keywords)
             })
         })

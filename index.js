@@ -12,6 +12,8 @@ async function start() {
 
     await robots.input(videoContent)
     await robots.text(videoContent)
+
+    console.log(JSON.stringify(videoContent, null, 4))
 }
 
 start()
