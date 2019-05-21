@@ -1,9 +1,11 @@
 const readline = require('readline-sync')
+const state = require('./state')
 
 function startRobot(content) {
     content.searchTerm = askSearchTerm()
     content.prefix = askPrefix()
     content.lang = askLang()
+    state.save(content)
 
     function askSearchTerm() {
         return readline.question('What subject do you create a video: ')
